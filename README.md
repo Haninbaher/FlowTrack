@@ -38,3 +38,8 @@ engine = create_engine('postgresql://external:external@localhost:5432/external')
 print("Uploading data to 'supply_chain_data' table...")
 df.to_sql('supply_chain_data', engine, if_exists='replace', index=False)
 print("Ingestion Completed Successfully!")
+
+
+
+### 🔍 Step 3: Data Verification
+To verify the data is correctly loaded, access the pgAdmin dashboard at http://localhost:5000 or use psql inside the container:
