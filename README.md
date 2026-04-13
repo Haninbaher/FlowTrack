@@ -37,7 +37,7 @@ engine = create_engine('postgresql://external:external@localhost:5432/external')
 # 4. Upload to Postgres
 print("Uploading data to 'supply_chain_data' table...")
 df.to_sql('supply_chain_data', engine, if_exists='replace', index=False)
-print("Ingestion Completed Successfully!")
+print("Ingestion Completed Successfully!")  ```
 
 
 
