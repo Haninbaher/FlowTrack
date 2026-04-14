@@ -101,7 +101,7 @@ Load the raw supply chain dataset into PostgreSQL without any transformation, pr
 * Loaded the dataset into PostgreSQL as a **raw table**
 * Stored the data exactly as-is (no cleaning or transformation)
 
----
+
 
 ### 🧰 Tools Used
 
@@ -109,7 +109,7 @@ Load the raw supply chain dataset into PostgreSQL without any transformation, pr
 * **SQLAlchemy + psycopg2** → for connecting to PostgreSQL
 * **PostgreSQL (Docker)** → for storing raw data
 
----
+
 
 ### ⚙️ Implementation
 
@@ -137,7 +137,7 @@ print("Loaded successfully")
 print(df.shape)
 ```
 
----
+
 
 ### 📊 Output
 
