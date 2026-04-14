@@ -97,7 +97,7 @@ Load the raw supply chain dataset into PostgreSQL without any transformation, pr
 
 ### 🧱 What We Did
 
-* Downloaded the **DataCo Supply Chain dataset** from Kaggle
+* Downloaded the **DataCo Supply Chain dataset** 
 * Loaded the dataset into PostgreSQL as a **raw table**
 * Stored the data exactly as-is (no cleaning or transformation)
 
