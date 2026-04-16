@@ -160,20 +160,34 @@ print("DONE", df.shape)
 
 This enables distributed processing on relational data.
   ```
+# Download the PostgreSQL JDBC driver to enable communication between Spark and the database
 wget https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
 
+# Launch the PySpark shell and include the downloaded JAR file in the classpath
 /opt/spark/bin/pyspark --jars postgresql-42.7.3.jar
 
+# Configure the JDBC connection settings and load the database table into a Spark DataFrame
 df = spark.read \
-    .format("jdbc") \
-    .option("url", "jdbc:postgresql://postgres:5432/flowtrack") \
-    .option("dbtable", "raw_supply_chain") \
-    .option("user", "flowtrack") \
-    .option("password", "flowtrack") \
-    .option("driver", "org.postgresql.Driver") \
-    .load()
+  .format("jdbc") \
+  .option("url", "jdbc:postgresql://postgres:5432/flowtrack") \
+  .option("dbtable", "raw_supply_chain") \
+  .option("user", "flowtrack") \
+  .option("password", "flowtrack") \
+  .option("driver", "org.postgresql.Driver") \
+  .load()
 
+# Display the first 5 rows of the DataFrame to verify the data was loaded correctly
 df.show(5)
 
   ```
 
+## 🏗️ Phase 3: Data Transformation (Spark)
+
+- Transformed raw dataset into structured tables:
+  - customers dimension
+  - products dimension
+  - orders fact table
+
+- Applied deduplication and column selection
+
+This step prepares data for analytics and warehousing.
