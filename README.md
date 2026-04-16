@@ -152,12 +152,29 @@ print("DONE", df.shape)
 
 ---
 
-## 🧠 Phase 2: Spark Integration
+## 🧠 Phase 2: Spark JDBC Connection
 
-- Connected Spark to PostgreSQL using JDBC
-- Successfully loaded raw dataset into Spark DataFrame
-- Previewed data using df.show()
+- Connected Spark to PostgreSQL using JDBC driver
+- Downloaded PostgreSQL driver manually
+- Loaded raw data into Spark DataFrame
 
-This confirms that Spark can access and process the raw data.
+This enables distributed processing on relational data.
 
-Next step: Transform and split the dataset into structured tables
+'''
+wget https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
+
+/opt/spark/bin/pyspark --jars postgresql-42.7.3.jar
+
+df = spark.read \
+    .format("jdbc") \
+    .option("url", "jdbc:postgresql://postgres:5432/flowtrack") \
+    .option("dbtable", "raw_supply_chain") \
+    .option("user", "flowtrack") \
+    .option("password", "flowtrack") \
+    .option("driver", "org.postgresql.Driver") \
+    .load()
+
+df.show(5)
+
+'''
+
