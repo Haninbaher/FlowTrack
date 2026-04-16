@@ -159,8 +159,7 @@ print("DONE", df.shape)
 - Loaded raw data into Spark DataFrame
 
 This enables distributed processing on relational data.
-
-'''
+  ```
 wget https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
 
 /opt/spark/bin/pyspark --jars postgresql-42.7.3.jar
@@ -176,5 +175,5 @@ df = spark.read \
 
 df.show(5)
 
-'''
+  ```
 
