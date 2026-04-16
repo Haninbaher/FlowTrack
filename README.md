@@ -213,3 +213,22 @@ orders_fact = df.select(
     "order_date", 
     "sales_amount"
 ).dropDuplicates()
+```
+
+---
+
+## 🏛️ Phase 4: Hive Warehouse Layer
+
+In this phase, the transformed data is persisted into the **Hive Metastore**. This establishes the "Single Source of Truth" within the data warehouse layer, allowing for persistent storage and SQL-based analytics.
+
+### ✅ Verification & Initial Load
+After processing the raw data, the first table (`customers`) was successfully written to Hive. Despite common environment warnings regarding schema versions, the data integrity was verified using Spark SQL.
+
+```python
+# Verifying table existence in Hive
+spark.sql("SHOW TABLES").show()
+
+# Verifying data content
+spark.sql("SELECT * FROM customers LIMIT 5").show()
+```
+
