@@ -82,6 +82,35 @@ Airflow → Workflow Scheduling & Automation
 
 ---
 
+
+
+
+graph TD
+    subgraph "Data Ingestion"
+        A[PostgreSQL - Raw Data] --> B[Spark Batch]
+        P[Python Producer] --> K[Kafka Topic]
+    end
+
+    subgraph "Processing & Warehouse"
+        B --> H[(Hive Warehouse)]
+        K --> S[Spark Streaming]
+    end
+
+    subgraph "Analytics Engineering"
+        H --> D[dbt Transformation]
+        D --> M[Analytics Data Marts]
+    end
+
+    subgraph "Orchestration"
+        AF[Apache Airflow] -.->|Triggers| B
+        AF -.->|Triggers| D
+    end
+
+
+
+
+
+
 ## 🟤 Phase 1: Raw Data Ingestion (PostgreSQL)
 
 ### 📌 Objective
