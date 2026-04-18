@@ -342,6 +342,12 @@ A dedicated Spark streaming job (`consume_shipment_events.py`) consumes the Kafk
 * **Processing:** Transforms raw event logs into actionable columns for monitoring.
 * **Sink:** Currently configured to output to the console for live validation, with architecture ready for database persistence.
 
+#### 4. Streaming Output (Validation Layer)
+The processed stream is currently written to the **Console** as a dedicated sink. This serves as a vital validation layer to confirm:
+* **Production Integrity:** Events are successfully serialized and produced by Python.
+* **Broker Reliability:** Kafka is receiving and persisting data without loss.
+* **Processing Accuracy:** Spark is correctly parsing and transforming events in real time with minimal latency.
+
 ---
 
 ### ✅ Success Metrics & Validation
