@@ -94,9 +94,6 @@ Hive → dbt → Analytics Tables
 
 Airflow → Workflow Scheduling & Automation
 
-### 5. Visualization Layer
-
-Power BI / Superset → Dashboards & KPIs
 
 ---
 
@@ -111,8 +108,7 @@ Power BI / Superset → Dashboards & KPIs
 | **Spark Structured Streaming** | Processes real-time shipment events from Kafka                                       |
 | **HDFS / Hive**                | Stores raw and processed data tables for querying and analytics                      |
 | **dbt**                        | Transforms raw data into structured analytical models (staging, intermediate, marts) |
-| **Airflow**                    | Orchestrates and schedules pipeline workflows                                        |
-| **Power BI / Superset**        | Visualizes insights and KPIs                                                         |
+| **Airflow**                    | Orchestrates and schedules pipeline workflows                                        |                                         
 | **Docker Compose**             | Runs the full data stack in a reproducible environment                               |
 
 ---
