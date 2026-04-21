@@ -1,336 +1,658 @@
 # 🚚 FlowTrack: Supply Chain Monitoring Pipeline
 
+FlowTrack is an end-to-end data engineering project that simulates a modern supply chain monitoring platform. It combines **batch ingestion**, **streaming event processing**, **data modeling**, **workflow orchestration**, and **business-ready analytics tables** to provide real-time visibility into shipment operations.
+
+The platform ingests static reference data such as warehouses, routes, carriers, and shipments, then combines it with real-time shipment event streams to generate actionable insights around shipment status, delays, route performance, and carrier efficiency.
+
+---
+
 ## 📌 Project Overview
 
-FlowTrack is an end-to-end data pipeline designed to monitor and analyze supply chain operations using both batch and real-time data processing.
+This project was built to simulate a realistic logistics data platform used by:
 
-The system integrates static reference data (such as warehouses, routes, and carriers) with real-time shipment event streams to generate actionable insights about shipment performance, delivery delays, and operational efficiency.
+* logistics and transportation companies
+* e-commerce fulfillment teams
+* delivery operations teams
+* analytics teams monitoring shipment performance
 
-This project simulates a real-world data platform used in logistics and supply chain companies.
+FlowTrack demonstrates how a modern data stack can be used to:
 
----
-
-## 🎯 Why This Project Matters
-
-Supply chain systems rely heavily on real-time visibility and data-driven decisions. Delays, inefficiencies, or bottlenecks can significantly impact business performance.
-
-This project demonstrates how modern data engineering tools can be combined to:
-
-* Track shipments in real time
-* Detect delivery delays early
-* Analyze route and warehouse performance
-* Build scalable data pipelines
-* Combine batch and streaming processing in one system
-
-💡 This makes the project highly relevant for real-world use cases in:
-
-* Logistics companies
-* E-commerce platforms
-* Delivery services
-* Operations analytics teams
+* ingest static and streaming data
+* clean and standardize operational datasets
+* track shipment lifecycle events in near real time
+* model analytics-ready marts for BI tools
+* orchestrate repeatable workflows with Airflow
+* validate data quality with dbt tests
 
 ---
 
-## 🧠 Project Goals
+## 🎯 Business Goals
 
-The main objectives of this project are:
+The main business objectives of FlowTrack are to:
 
-* Build a complete **data pipeline architecture**
-* Integrate **batch + streaming data**
-* Apply **data transformations using Spark and dbt**
-* Orchestrate workflows using Airflow
-* Store and query data efficiently using Hive
-  
----
-
-## 🏗️ Architecture Overview
-
-The pipeline consists of two main flows:
-
-### 1. Static Data Pipeline (Batch)
-
-CSV Files → PostgreSQL → Spark Batch → Hive
-
-### 2. Real-Time Data Pipeline (Streaming)
-
-Python Generator → Kafka → Spark Structured Streaming → Hive
-
-### 3. Modeling Layer
-
-Hive → dbt → Analytics Tables
-
-### 4. Orchestration Layer
-
-Airflow → Workflow Scheduling & Automation
-
+* monitor current shipment status in real time
+* identify delayed shipments and delay reasons
+* analyze carrier performance
+* analyze route performance
+* provide clean, dashboard-ready analytics tables
+* create a scalable, reproducible local data platform
 
 ---
 
-## 🧰 Technology Stack & Roles
+## 🧱 Final Architecture
 
-| Tool                           | Role in the Project                                                                  |
-| ------------------------------ | ------------------------------------------------------------------------------------ |
-| **PostgreSQL**                 | Stores static reference data such as warehouses, routes, carriers, and products      |
-| **Python**                     | Generates simulated real-time shipment events                                        |
-| **Kafka**                      | Handles real-time data streaming (shipment events pipeline)                          |
-| **Spark Batch**                | Loads and transforms static data from PostgreSQL into Hive                           |
-| **Spark Structured Streaming** | Processes real-time shipment events from Kafka                                       |
-| **HDFS / Hive**                | Stores raw and processed data tables for querying and analytics                      |
-| **dbt**                        | Transforms raw data into structured analytical models (staging, intermediate, marts) |
-| **Airflow**                    | Orchestrates and schedules pipeline workflows                                        |                                         
-| **Docker Compose**             | Runs the full data stack in a reproducible environment                               |
+### Data Flow
+
+#### 1) Batch Pipeline
+
+CSV files → PostgreSQL raw tables → transformation jobs → PostgreSQL staging tables
+
+#### 2) Streaming Pipeline
+
+Python shipment event generator → Kafka topic → Python consumer → PostgreSQL raw event table → transformation job → PostgreSQL staging event table
+
+#### 3) Analytics Layer
+
+Staging tables → dbt models → analytics marts
+
+#### 4) Orchestration Layer
+
+Airflow DAG → batch ingestion + transformations + dbt refresh
+
+#### 5) BI Layer
+
+PostgreSQL analytics schema → Power BI
 
 ---
 
+## 🛠️ Tech Stack
 
-## 🟤 Phase 1: Raw Data Ingestion (PostgreSQL)
+### Core Infrastructure
 
-### 📌 Objective
+* **Docker Compose** — local orchestration of all services
+* **PostgreSQL** — storage layer for raw, staging, and analytics data
+* **pgAdmin** — database exploration and validation
 
-Load the raw supply chain dataset into PostgreSQL without any transformation, preserving the original structure for downstream processing.
+### Data Processing
+
+* **Python** — ingestion scripts, producer, and consumer logic
+* **Spark container** — transformation runtime for batch jobs
+* **Kafka** — real-time event streaming
+* **Zookeeper** — Kafka coordination
+
+### Transformation & Modeling
+
+* **dbt** — staging views, marts, and data quality tests
+
+### Orchestration
+
+* **Apache Airflow** — DAG-based workflow scheduling and execution
+
+### Visualization
+
+* **Power BI** — BI connection and dashboarding layer
 
 
+---
 
-### 🧱 What We Did
+## 🗃️ Data Model
 
-* Downloaded the **DataCo Supply Chain dataset** 
-* Loaded the dataset into PostgreSQL as a **raw table**
-* Stored the data exactly as-is (no cleaning or transformation)
+### Raw Layer
 
+The raw layer stores source data with minimal modification.
 
+#### Static raw tables
 
-### 🧰 Tools Used
+* `raw.warehouses`
+* `raw.carriers`
+* `raw.routes`
+* `raw.shipments`
 
-* **Python (pandas)** → for reading the CSV file and loading data
-* **SQLAlchemy + psycopg2** → for connecting to PostgreSQL
-* **PostgreSQL (Docker)** → for storing raw data
+#### Streaming raw table
 
+* `raw.shipment_events`
 
+### Staging Layer
 
-### ⚙️ Implementation
+The staging layer standardizes and cleans incoming records.
 
-We used a Python script to load the dataset into PostgreSQL:
+#### Static staging tables
 
-```python
-from sqlalchemy import create_engine
-import pandas as pd
+* `staging.stg_warehouses`
+* `staging.stg_carriers`
+* `staging.stg_routes`
+* `staging.stg_shipments`
 
-engine = create_engine(
-    "postgresql+psycopg2://flowtrack:flowtrack@localhost:5432/flowtrack"
-)
+#### Event staging table
 
-df = pd.read_csv(
-    r"C:\Users\Hanin Baher\Downloads\DataCoSupplyChainDataset (1).csv",
-    encoding="latin1"
-)
+* `staging.stg_shipment_events`
 
-df.to_sql("raw_supply_chain", engine, if_exists="replace", index=False)
+### Analytics Layer
 
-print("DONE", df.shape)
+The analytics layer contains BI-ready marts used by Power BI.
+
+#### Final marts
+
+* `analytics.mart_shipment_overview`
+* `analytics.mart_live_shipment_status`
+* `analytics.mart_carrier_performance`
+* `analytics.mart_route_performance`
+* `analytics.mart_shipment_status`
+* `analytics.mart_delayed_shipments`
+* `analytics.mart_delay_events`
+
+---
+
+## 📘 Dataset Description
+
+### Static Reference Data
+
+The project starts with controlled CSV datasets to establish a consistent operational model:
+
+* `warehouses.csv`
+* `carriers.csv`
+* `routes.csv`
+* `shipments.csv`
+
+These files are ingested into PostgreSQL and transformed into structured staging tables.
+
+### Streaming Event Data
+
+Shipment lifecycle events are generated in real time through a Python event generator.
+
+Example lifecycle:
+
+```text
+shipment_created → picked_up → in_transit → arrived_at_hub → out_for_delivery → delivered
 ```
 
+Optional delay events may appear between valid lifecycle stages:
 
+* `delayed`
 
-### 📊 Output
-
-* Table created in PostgreSQL:
-
-  ```
-  raw_supply_chain
-  ```
-
-* Dataset size:
-
-  ```
-  ~180,000 rows
-  ~53 columns
-  ```
+This design makes the event stream more realistic and suitable for real operational analysis.
 
 ---
 
-## 🧠 Phase 2: Spark JDBC Connection
+## 🔄 End-to-End Pipeline Walkthrough
 
-- Connected Spark to PostgreSQL using JDBC driver
-- Downloaded PostgreSQL driver manually
-- Loaded raw data into Spark DataFrame
+### 1) Static Ingestion
 
-This enables distributed processing on relational data.
+The static CSV files are loaded into PostgreSQL raw tables using the batch ingestion script.
 
-  ```python
-# Download the PostgreSQL JDBC driver to enable communication between Spark and the database
-wget https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
+**Script:**
 
-# Launch the PySpark shell and include the downloaded JAR file in the classpath
-/opt/spark/bin/pyspark --jars postgresql-42.7.3.jar
+* `spark/batch/ingest_static_data.py`
 
-# Configure the JDBC connection settings and load the database table into a Spark DataFrame
-df = spark.read \
-  .format("jdbc") \
-  .option("url", "jdbc:postgresql://postgres:5432/flowtrack") \
-  .option("dbtable", "raw_supply_chain") \
-  .option("user", "flowtrack") \
-  .option("password", "flowtrack") \
-  .option("driver", "org.postgresql.Driver") \
-  .load()
+### 2) Static Transformations
 
-# Display the first 5 rows of the DataFrame to verify the data was loaded correctly
-df.show(5)
+Raw static tables are cleaned and written into staging tables.
 
-  ```
+**Transformations include:**
 
-## 🏗️ Phase 3: Data Transformation (Apache Spark)
+* trimming text fields
+* standardizing values
+* deduplicating records
+* converting timestamps and numeric types
+* creating simple business flags such as `is_priority`
 
-In this phase, the raw supply chain data is processed using **Apache Spark** to convert it into a structured **Star Schema** optimized for analytical queries and data warehousing.
+**Script:**
 
-### 🎯 Key Objectives
+* `spark/batch/transform_static_data.py`
 
-* **Data Modeling**: Transformed the flat raw dataset into a relational structure consisting of:
-    * **Customers Dimension**: Contains unique customer profiles and attributes.
-    * **Products Dimension**: Handles product categorization and details.
-    * **Orders Fact Table**: The central table containing transactional metrics and foreign keys.
-* **Data Cleaning**: Applied **deduplication** logic to ensure data integrity and handled missing or null values.
-* **Feature Engineering**: Selected relevant columns and optimized data types to ensure efficient storage and faster query performance.
+### 3) Streaming Ingestion
 
-### 🛠️ Implementation Details
+A Python producer continuously generates shipment events and publishes them to Kafka.
+A consumer reads those events and writes them into PostgreSQL.
 
-The transformation process involves reading the raw JDBC source and mapping it to the new schema:
+**Scripts:**
 
-```python
-# Logic Summary:
-# 1. Remove duplicates from the raw source
-# 2. Select and cast specific columns for the Fact and Dimension tables
-# 3. Save the structured data for downstream analytics
+* `producer/generator.py`
+* `producer/producer.py`
+* `producer/consumer_to_postgres.py`
 
-# Example: Creating the Fact Table
-orders_fact = df.select(
-    "order_id", 
-    "customer_id", 
-    "product_id", 
-    "order_date", 
-    "sales_amount"
-).dropDuplicates()
+### 4) Event Transformations
+
+Raw shipment events are cleaned and standardized in the staging layer.
+
+**Script:**
+
+* `spark/batch/transform_shipment_events.py`
+
+### 5) Analytics Modeling
+
+dbt builds staging views and business marts in the analytics schema.
+
+**Key outputs include:**
+
+* live shipment status
+* carrier performance
+* route performance
+* shipment status breakdown
+* historical delay events
+
+### 6) Workflow Orchestration
+
+Airflow orchestrates the batch ingestion, transformation, event processing refresh, and dbt model execution.
+
+**DAG:**
+
+* `flowtrack_batch_pipeline`
+
+---
+
+## 📡 Streaming Design
+
+The streaming layer simulates a real operational monitoring workflow.
+
+### Producer responsibilities
+
+* generate shipment lifecycle events
+* assign dynamic shipment IDs
+* simulate realistic progress through valid statuses
+* inject delay events with realistic causes
+
+### Kafka topic
+
+* `shipment_events`
+
+### Consumer responsibilities
+
+* read shipment events from Kafka
+* insert events into `raw.shipment_events`
+* preserve event history for downstream analytics
+
+### Example delay reasons
+
+* traffic
+* weather
+* warehouse backlog
+* vehicle issue
+
+---
+
+## 📊 Analytics Marts Explained
+
+### `mart_shipment_overview`
+
+A denormalized shipment-level table combining shipment, route, carrier, and warehouse metadata.
+
+**Use cases:**
+
+* shipment-level drill down
+* detail views in BI
+* shipment monitoring tables
+
+### `mart_live_shipment_status`
+
+Returns the latest known event for each shipment.
+
+**Use cases:**
+
+* live tracking dashboard
+* current operational visibility
+* shipment status cards
+
+### `mart_carrier_performance`
+
+Aggregated performance view by carrier.
+
+**Use cases:**
+
+* compare carrier efficiency
+* identify underperforming carriers
+* calculate delivery success rates
+
+### `mart_route_performance`
+
+Aggregated performance view by route.
+
+**Use cases:**
+
+* identify routes with delays
+* compare route efficiency
+* analyze shipment volume by route
+
+### `mart_shipment_status`
+
+Simple shipment status distribution table.
+
+**Use cases:**
+
+* KPI cards
+* donut or bar charts for current shipment distribution
+
+### `mart_delayed_shipments`
+
+Contains shipments whose **current** latest status is delayed.
+
+**Use cases:**
+
+* active exception monitoring
+* operations alerting
+
+### `mart_delay_events`
+
+Contains all historical delay events.
+
+**Use cases:**
+
+* delay reason analysis
+* historical exception analysis
+* delay frequency by route/carrier/location
+
+---
+
+## ✅ Data Quality Checks
+
+dbt tests are used to validate data quality.
+
+### Examples of implemented tests
+
+* `not_null` on primary business keys
+* `unique` on shipment and route identifiers
+* `accepted_values` on shipment status values
+
+### Why this matters
+
+These tests ensure the analytics layer is trustworthy before being consumed by Power BI.
+
+---
+
+## ⏱️ Airflow Orchestration
+
+The Airflow DAG automates the main pipeline steps in sequence:
+
+1. `ingest_static_data`
+2. `transform_static_data`
+3. `transform_shipment_events`
+4. `run_dbt_models`
+
+This creates a repeatable orchestration layer instead of manually running each script.
+
+### Airflow DAG Success Screenshot
+
+> Replace the path below with your final image path if needed.
+
+```markdown
+![Airflow DAG Success](docs/images/airflow_dag_success.png)
+```
+
+You can use the screenshot you captured for this section.
+
+---
+
+## 🖼️ Power BI Connection
+
+Power BI connects directly to PostgreSQL using the analytics schema.
+
+### Connection settings
+
+* **Server:** `localhost:5435`
+* **Database:** `flowtrack`
+* **Username:** `flowtrack`
+* **Password:** `flowtrack`
+* **Mode:** Import
+
+### Recommended tables for Power BI
+
+* `analytics.mart_live_shipment_status`
+* `analytics.mart_carrier_performance`
+* `analytics.mart_route_performance`
+* `analytics.mart_shipment_status`
+* `analytics.mart_delay_events`
+* `analytics.mart_shipment_overview`
+
+Optional:
+
+* `analytics.mart_delayed_shipments`
+
+---
+
+## 📈 Suggested Dashboard Pages
+
+### 1) Executive Overview
+
+Recommended visuals:
+
+* total shipments
+* current delayed shipments
+* shipment status distribution
+* live shipment table
+
+Recommended tables:
+
+* `mart_live_shipment_status`
+* `mart_shipment_status`
+
+### 2) Carrier Performance
+
+Recommended visuals:
+
+* delivery success rate by carrier
+* delayed shipments by carrier
+* total shipments by carrier
+
+Recommended table:
+
+* `mart_carrier_performance`
+
+### 3) Route Performance
+
+Recommended visuals:
+
+* delay rate by route
+* total shipments by route
+* route distance vs delay rate
+
+Recommended table:
+
+* `mart_route_performance`
+
+### 4) Delays & Exceptions
+
+Recommended visuals:
+
+* delay events by reason
+* delay events by carrier
+* delay events by location
+* currently delayed shipments
+
+Recommended tables:
+
+* `mart_delay_events`
+* `mart_delayed_shipments`
+
+---
+
+## 🚀 How to Run the Project
+
+### 1) Start the services
+
+```bash
+docker compose up -d
+```
+
+### 2) Verify running containers
+
+```bash
+docker compose ps
+```
+
+### 3) Run the batch pipeline manually if needed
+
+```bash
+docker exec -it flowtrack_spark python3 /opt/spark/work-dir/jobs/batch/ingest_static_data.py
+docker exec -it flowtrack_spark python3 /opt/spark/work-dir/jobs/batch/transform_static_data.py
+docker exec -it flowtrack_spark python3 /opt/spark/work-dir/jobs/batch/transform_shipment_events.py
+docker exec -it flowtrack_dbt dbt run --profiles-dir /usr/app
+```
+
+### 4) Run dbt tests
+
+```bash
+docker exec -it flowtrack_dbt dbt test --profiles-dir /usr/app
+```
+
+### 5) Start the streaming pipeline
+
+Open one terminal for the producer:
+
+```bash
+docker exec -it flowtrack_producer python producer.py
+```
+
+Open a second terminal for the consumer:
+
+```bash
+docker exec -it flowtrack_producer python consumer_to_postgres.py
+```
+
+### 6) Trigger the Airflow DAG
+
+Use the Airflow UI to trigger:
+
+* `flowtrack_batch_pipeline`
+
+---
+
+## 🧪 Example Validation Queries
+
+### Count transformed event records
+
+```sql
+SELECT COUNT(*) FROM staging.stg_shipment_events;
+```
+
+### Check current live status
+
+```sql
+SELECT * FROM analytics.mart_live_shipment_status;
+```
+
+### Check historical delay events
+
+```sql
+SELECT * FROM analytics.mart_delay_events;
+```
+
+### Check carrier performance
+
+```sql
+SELECT * FROM analytics.mart_carrier_performance;
 ```
 
 ---
 
-## 🏛️ Phase 4: Hive Warehouse Layer
+## 🧠 Key Engineering Decisions
 
-In this phase, the transformed data is persisted into the **Hive Metastore**. This establishes the "Single Source of Truth" within the data warehouse layer, allowing for persistent storage and SQL-based analytics.
+### Why PostgreSQL instead of Hive in V1?
 
-### ✅ Verification & Initial Load
-After processing the raw data, the first table (`customers`) was successfully written to Hive. Despite common environment warnings regarding schema versions, the data integrity was verified using Spark SQL.
+To keep the MVP consistent, simpler to debug, and compatible with `dbt-postgres`.
 
-```python
-# Verifying table existence in Hive
-spark.sql("SHOW TABLES").show()
+### Why use marts for BI instead of raw tables?
 
-# Verifying data content
-spark.sql("SELECT * FROM customers LIMIT 5").show()
+To improve performance, simplify dashboard design, and expose business-ready metrics.
+
+### Why use dynamic shipment IDs in streaming?
+
+To avoid unrealistic event resets and to simulate a more realistic operational event stream.
+
+### Why use Airflow?
+
+To move from manual execution to orchestrated, repeatable workflows.
+
+### Why use dbt tests?
+
+To validate the trustworthiness of the transformed analytics layer.
+
+---
+
+## 📌 Current Project Status
+
+### Completed
+
+* Dockerized local data platform
+* Batch ingestion pipeline
+* Streaming event pipeline
+* Static and event transformations
+* dbt models and marts
+* dbt data quality tests
+* Airflow orchestration
+* Power BI database connection
+
+### Remaining
+
+* add Power BI dashboard screenshots
+* finalize dashboard visuals
+* optionally add more advanced metrics and tests
+
+---
+
+## 🔮 Future Improvements
+
+Potential next steps for future versions:
+
+* migrate streaming consumer logic to Spark Structured Streaming
+* add SLA breach calculations
+* add delay severity buckets
+* add warehouse load and utilization marts
+* add alerting and notifications in Airflow
+* deploy the stack to cloud infrastructure
+* add CI/CD for dbt and pipeline checks
+
+---
+
+## 🏁 Conclusion
+
+FlowTrack is a complete data engineering project that demonstrates the design of a realistic logistics monitoring platform from raw ingestion to BI-ready marts.
+
+It combines:
+
+* batch + streaming data processing
+* orchestration
+* transformation and modeling
+* data quality validation
+* business-ready analytics
+* BI integration
+
+This project is designed not just as a technical exercise, but as a realistic simulation of how logistics data platforms are built and consumed.
+
+---
+
+## 📷 Screenshots
+
+> Add your screenshots here after finalizing the dashboard.
+
+### Airflow DAG
+
+```markdown
+![Airflow DAG Success](docs/images/airflow_dag_success.png)
 ```
----
 
-## 💎 Phase 5: Analytics Engineering (dbt Modeling)
+### Power BI Dashboard - Overview
 
-In this phase, we transitioned from data storage to data transformation using **dbt (data build tool)**. This layer injects business logic into our raw warehouse tables, creating refined, analytics-ready models optimized for BI tools and strategic reporting.
+```markdown
+![Power BI Overview](docs/images/powerbi_overview.png)
+```
 
-### 🚀 Implementation & Model Overview
-We successfully developed and executed **three core dbt models** designed to monitor logistics performance and supply chain efficiency:
+### Power BI Dashboard - Carrier Performance
 
-1.  **`order_delivery_monitoring`**: Built on top of the `fct_orders` table, this model prepares core shipment fields including delivery status, delay days, and late risk flags.
-2.  **`region_delay_summary`**: Aggregates delay metrics by geographic area to pinpoint regional bottlenecks.
-3.  **`shipping_mode_performance`**: Evaluates the efficiency of different carriers and shipping methods.
+```markdown
+![Power BI Carrier Performance](docs/images/powerbi_carrier_performance.png)
+```
 
-### 📊 Key Monitoring Metrics
-The models transform raw transactional data into actionable insights by tracking:
-* **Delivery Performance:** Monitors `delivery status` and flags `late delivery risk`.
-* **Time Analysis:** Calculates `actual` vs. `scheduled` shipping days to compute `delay days`.
-* **Logistics Context:** Organizes data by `shipping mode`, `order region`, and `order country`.
+### Power BI Dashboard - Delays & Exceptions
 
-### 💡 Business Value (The "Why")
-This analytics layer is specifically designed to answer critical business questions:
-* **Real-time Tracking:** Which specific orders are currently delayed?
-* **Geographic Insights:** Which regions suffer from the highest delay rates?
-* **Operational Efficiency:** Which shipping modes are consistently underperforming or overperforming?
-
-### 🛠️ dbt Technical Stack
-* **Layer:** Analytics Modeling (Gold/Data Mart Layer).
-* **Source:** Built on structured `fct_orders` and dimension tables in the warehouse.
-* **Outcome:** Materialized views that serve as the "Single Source of Truth" for Power BI, Tableau, or Metabase.
-
-> **Status:** ✅ All models successfully compiled and ran. This marks the establishment of the **Analytics Modeling Layer**, enabling data-driven decision-making for the logistics department.
+```markdown
+![Power BI Delays](docs/images/powerbi_delays.png)
+```
 
 ---
 
-## ⚙️ Phase 6: Batch Orchestration (Apache Airflow)
+## 👤 Author
 
-To ensure the pipeline is reliable and production-ready, I implemented **Apache Airflow** to orchestrate the end-to-end workflow. The DAG, named `flowtrack_batch_pipeline`, serves as the control plane for the entire data movement.
+**Your Name Here**
 
-### 🤖 Automation Workflow
-The DAG automates the complex dependencies between our processing layers:
-* **Spark Orchestration:** Automatically triggers the Spark batch jobs to transform raw data from the JDBC source into structured Hive warehouse tables (Raw → Clean).
-* **dbt Orchestration:** Upon successful completion of Spark jobs, Airflow triggers the dbt transformation layer to refresh the analytics models (`order_delivery_monitoring`, etc.).
+Built as an end-to-end data engineering portfolio project focused on supply chain monitoring, streaming analytics, orchestration, and BI-ready data modeling.
 
-### 🌟 Key Benefits
-* **Elimination of Manual Intervention:** Replaces manual script execution with a scheduled, hands-off workflow.
-* **Dependency Management:** Ensures that the dbt models only run if the Spark data load succeeds, preventing data quality issues.
-* **Reproducibility:** Provides a clear audit trail and the ability to re-run specific tasks or the entire pipeline in case of failure.
-* **Monitoring & Alerting:** Leverages Airflow’s UI to monitor the health of the pipeline and track execution times.
-
-### 🛠️ Technical Setup
-* **DAG ID:** `flowtrack_batch_pipeline`
-* **Operators Used:** `SparkSubmitOperator`, `BashOperator` (for dbt), and `DummyOperator` for flow control.
-* **Schedule:** Configured for automated batch intervals to keep the warehouse updated.
-
-> **Status:** ✅ Fully Operational. The pipeline is now a self-healing, automated system that moves data from source to insights without human oversight.
-
-
-## ⚡ Phase 7: Real-Time Streaming Pipeline (Kafka, Spark & Hive)
-
-To extend **FlowTrack** from historical batch analytics into live shipment monitoring, a real-time streaming layer was integrated. This phase introduces an **Event-Driven Architecture** that simulates shipment lifecycle updates, streams them through Kafka, and processes them using Spark Structured Streaming.
-
-### 🏗️ Real-Time Architecture
-The data flows through a modern streaming stack to enable proactive monitoring:
-**Python Generator** ➡️ **Apache Kafka** ➡️ **Spark Structured Streaming** ➡️ **Hive Warehouse**
-
----
-
-### 🎯 Objective
-The goal is to transition from static reporting to **Live Operational Visibility**. Instead of waiting for daily batch jobs, the pipeline continuously processes events as they happen, such as:
-* `order_created` | `packed` | `shipped` | `in_transit` | `delivered`
-* **Proactive Detection:** Automatically identifies and streams `delayed` events for shipments with a high late-delivery risk.
-
----
-
-### 🛠️ Real-Time Workflow
-
-#### 1. Python Generator (Event Producer)
-A custom script, `shipment_event_producer.py`, acts as the system's "Heartbeat."
-* **Function:** Reads order-level data and simulates various lifecycle stages.
-* **Payload:** Generates JSON messages containing critical attributes like `order_id`, `event_time`, `delivery_status`, and `late_delivery_risk`.
-* **Logic:** If an order is flagged with a risk of delay, the generator emits a specific `delayed` event to simulate real-world logistics bottlenecks.
-
-#### 2. Apache Kafka (The Streaming Backbone)
-Kafka serves as the resilient event bus, decoupling data generation from processing.
-* **Topic:** `shipment_events`
-* **Role:** Provides a scalable, fault-tolerant buffer that ensures zero data loss during high-velocity event ingestion.
-
-#### 3. Spark Structured Streaming (Processing Engine)
-The streaming application, `consume_shipment_events.py`, consumes the Kafka topic continuously.
-* **Schema Enforcement:** Parses incoming JSON payloads using a predefined schema to ensure data quality.
-* **Transformation:** Converts raw, unstructured event strings into structured DataFrames in real time, making the data "analytics-ready" instantly.
-
-#### 4. Hive (Streaming Sink & Storage Layer)
-The final processed stream is persisted into **Hive**, serving as the permanent storage for real-time events.
-* **Hybrid Analytics:** Enables joining live event data with historical batch tables for deeper insights.
-* **Persistence:** Makes the entire event history queryable for downstream BI tools and monitoring dashboards.
-
----
-
-### ✅ Success Metrics & Achievements
-This phase successfully upgrades FlowTrack into a **Hybrid Data Platform**:
-
-| Feature | Batch Processing | Real-Time Streaming |
-| :--- | :--- | :--- |
-| **Focus** | Historical trends & Data Modeling | Live monitoring & Event tracking |
-| **Tools** | Spark Batch, dbt, Airflow | Kafka, Spark Streaming, Python |
-| **Outcome** | Deep Analytics & Strategic Decisions | Immediate Operational Awareness |
