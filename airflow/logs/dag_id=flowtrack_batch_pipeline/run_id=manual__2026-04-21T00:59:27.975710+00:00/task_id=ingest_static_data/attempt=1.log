@@ -1,0 +1,35 @@
+[2026-04-21T00:59:28.551+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-04-21T00:59:28.596+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.ingest_static_data manual__2026-04-21T00:59:27.975710+00:00 [queued]>
+[2026-04-21T00:59:28.607+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.ingest_static_data manual__2026-04-21T00:59:27.975710+00:00 [queued]>
+[2026-04-21T00:59:28.607+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 1
+[2026-04-21T00:59:28.622+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): ingest_static_data> on 2026-04-21 00:59:27.975710+00:00
+[2026-04-21T00:59:28.630+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'flowtrack_batch_pipeline', 'ingest_static_data', 'manual__2026-04-21T00:59:27.975710+00:00', '--job-id', '24', '--raw', '--subdir', 'DAGS_FOLDER/flowtrack_batch_pipeline.py', '--cfg-path', '/tmp/tmp5nx04urk']
+[2026-04-21T00:59:28.634+0000] {standard_task_runner.py:91} INFO - Job 24: Subtask ingest_static_data
+[2026-04-21T00:59:28.634+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62 DeprecationWarning: This process (pid=299) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-04-21T00:59:28.634+0000] {standard_task_runner.py:64} INFO - Started process 300 to run task
+[2026-04-21T00:59:28.694+0000] {task_command.py:426} INFO - Running <TaskInstance: flowtrack_batch_pipeline.ingest_static_data manual__2026-04-21T00:59:27.975710+00:00 [running]> on host bca783532e21
+[2026-04-21T00:59:28.797+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='flowtrack' AIRFLOW_CTX_DAG_ID='flowtrack_batch_pipeline' AIRFLOW_CTX_TASK_ID='ingest_static_data' AIRFLOW_CTX_EXECUTION_DATE='2026-04-21T00:59:27.975710+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-21T00:59:27.975710+00:00'
+[2026-04-21T00:59:28.798+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-04-21T00:59:28.817+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-04-21T00:59:28.818+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'docker exec flowtrack_spark python3 /opt/spark/work-dir/jobs/batch/ingest_static_data.py']
+[2026-04-21T00:59:28.827+0000] {subprocess.py:86} INFO - Output:
+[2026-04-21T00:59:29.648+0000] {subprocess.py:93} INFO - Loading warehouses.csv -> raw.warehouses (3 rows)
+[2026-04-21T00:59:29.648+0000] {subprocess.py:93} INFO - Finished loading raw.warehouses
+[2026-04-21T00:59:29.648+0000] {subprocess.py:93} INFO - Loading carriers.csv -> raw.carriers (3 rows)
+[2026-04-21T00:59:29.648+0000] {subprocess.py:93} INFO - Finished loading raw.carriers
+[2026-04-21T00:59:29.648+0000] {subprocess.py:93} INFO - Loading routes.csv -> raw.routes (3 rows)
+[2026-04-21T00:59:29.649+0000] {subprocess.py:93} INFO - Finished loading raw.routes
+[2026-04-21T00:59:29.649+0000] {subprocess.py:93} INFO - Loading shipments.csv -> raw.shipments (3 rows)
+[2026-04-21T00:59:29.649+0000] {subprocess.py:93} INFO - Finished loading raw.shipments
+[2026-04-21T00:59:29.649+0000] {subprocess.py:93} INFO - 
+[2026-04-21T00:59:29.649+0000] {subprocess.py:93} INFO - Validation:
+[2026-04-21T00:59:29.649+0000] {subprocess.py:93} INFO - raw.warehouses: 3 rows
+[2026-04-21T00:59:29.650+0000] {subprocess.py:93} INFO - raw.carriers: 3 rows
+[2026-04-21T00:59:29.650+0000] {subprocess.py:93} INFO - raw.routes: 3 rows
+[2026-04-21T00:59:29.650+0000] {subprocess.py:93} INFO - raw.shipments: 3 rows
+[2026-04-21T00:59:29.735+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-04-21T00:59:29.736+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-04-21T00:59:29.767+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=flowtrack_batch_pipeline, task_id=ingest_static_data, run_id=manual__2026-04-21T00:59:27.975710+00:00, execution_date=20260421T005927, start_date=20260421T005928, end_date=20260421T005929
+[2026-04-21T00:59:29.811+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 0
+[2026-04-21T00:59:29.841+0000] {taskinstance.py:3503} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-04-21T00:59:29.843+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

@@ -1,0 +1,31 @@
+[2026-04-21T01:07:34.452+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-04-21T01:07:34.484+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.transform_static_data manual__2026-04-21T01:07:32.340195+00:00 [queued]>
+[2026-04-21T01:07:34.492+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.transform_static_data manual__2026-04-21T01:07:32.340195+00:00 [queued]>
+[2026-04-21T01:07:34.493+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 1
+[2026-04-21T01:07:34.504+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): transform_static_data> on 2026-04-21 01:07:32.340195+00:00
+[2026-04-21T01:07:34.510+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'flowtrack_batch_pipeline', 'transform_static_data', 'manual__2026-04-21T01:07:32.340195+00:00', '--job-id', '29', '--raw', '--subdir', 'DAGS_FOLDER/flowtrack_batch_pipeline.py', '--cfg-path', '/tmp/tmp_4_9n7sp']
+[2026-04-21T01:07:34.512+0000] {standard_task_runner.py:91} INFO - Job 29: Subtask transform_static_data
+[2026-04-21T01:07:34.512+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62 DeprecationWarning: This process (pid=435) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-04-21T01:07:34.513+0000] {standard_task_runner.py:64} INFO - Started process 436 to run task
+[2026-04-21T01:07:34.555+0000] {task_command.py:426} INFO - Running <TaskInstance: flowtrack_batch_pipeline.transform_static_data manual__2026-04-21T01:07:32.340195+00:00 [running]> on host bca783532e21
+[2026-04-21T01:07:34.633+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='flowtrack' AIRFLOW_CTX_DAG_ID='flowtrack_batch_pipeline' AIRFLOW_CTX_TASK_ID='transform_static_data' AIRFLOW_CTX_EXECUTION_DATE='2026-04-21T01:07:32.340195+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-21T01:07:32.340195+00:00'
+[2026-04-21T01:07:34.634+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-04-21T01:07:34.649+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-04-21T01:07:34.650+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'docker exec flowtrack_spark python3 /opt/spark/work-dir/jobs/batch/transform_static_data.py']
+[2026-04-21T01:07:34.657+0000] {subprocess.py:86} INFO - Output:
+[2026-04-21T01:07:35.264+0000] {subprocess.py:93} INFO - Finished loading staging.stg_warehouses
+[2026-04-21T01:07:35.264+0000] {subprocess.py:93} INFO - Finished loading staging.stg_carriers
+[2026-04-21T01:07:35.264+0000] {subprocess.py:93} INFO - Finished loading staging.stg_routes
+[2026-04-21T01:07:35.265+0000] {subprocess.py:93} INFO - Finished loading staging.stg_shipments
+[2026-04-21T01:07:35.265+0000] {subprocess.py:93} INFO - 
+[2026-04-21T01:07:35.265+0000] {subprocess.py:93} INFO - Validation:
+[2026-04-21T01:07:35.265+0000] {subprocess.py:93} INFO - stg_warehouses: 3 rows
+[2026-04-21T01:07:35.265+0000] {subprocess.py:93} INFO - stg_carriers: 3 rows
+[2026-04-21T01:07:35.265+0000] {subprocess.py:93} INFO - stg_routes: 3 rows
+[2026-04-21T01:07:35.265+0000] {subprocess.py:93} INFO - stg_shipments: 3 rows
+[2026-04-21T01:07:35.343+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-04-21T01:07:35.344+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-04-21T01:07:35.374+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=flowtrack_batch_pipeline, task_id=transform_static_data, run_id=manual__2026-04-21T01:07:32.340195+00:00, execution_date=20260421T010732, start_date=20260421T010734, end_date=20260421T010735
+[2026-04-21T01:07:35.409+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 0
+[2026-04-21T01:07:35.434+0000] {taskinstance.py:3503} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-04-21T01:07:35.437+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

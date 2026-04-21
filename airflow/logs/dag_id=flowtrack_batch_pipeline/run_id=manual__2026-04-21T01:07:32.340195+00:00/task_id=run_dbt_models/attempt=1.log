@@ -1,0 +1,51 @@
+[2026-04-21T01:07:37.185+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-04-21T01:07:37.209+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.run_dbt_models manual__2026-04-21T01:07:32.340195+00:00 [queued]>
+[2026-04-21T01:07:37.216+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.run_dbt_models manual__2026-04-21T01:07:32.340195+00:00 [queued]>
+[2026-04-21T01:07:37.216+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 1
+[2026-04-21T01:07:37.225+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): run_dbt_models> on 2026-04-21 01:07:32.340195+00:00
+[2026-04-21T01:07:37.230+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'flowtrack_batch_pipeline', 'run_dbt_models', 'manual__2026-04-21T01:07:32.340195+00:00', '--job-id', '31', '--raw', '--subdir', 'DAGS_FOLDER/flowtrack_batch_pipeline.py', '--cfg-path', '/tmp/tmpzhejnn6p']
+[2026-04-21T01:07:37.232+0000] {standard_task_runner.py:91} INFO - Job 31: Subtask run_dbt_models
+[2026-04-21T01:07:37.231+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62 DeprecationWarning: This process (pid=461) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-04-21T01:07:37.232+0000] {standard_task_runner.py:64} INFO - Started process 462 to run task
+[2026-04-21T01:07:37.265+0000] {task_command.py:426} INFO - Running <TaskInstance: flowtrack_batch_pipeline.run_dbt_models manual__2026-04-21T01:07:32.340195+00:00 [running]> on host bca783532e21
+[2026-04-21T01:07:37.330+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='flowtrack' AIRFLOW_CTX_DAG_ID='flowtrack_batch_pipeline' AIRFLOW_CTX_TASK_ID='run_dbt_models' AIRFLOW_CTX_EXECUTION_DATE='2026-04-21T01:07:32.340195+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-21T01:07:32.340195+00:00'
+[2026-04-21T01:07:37.330+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-04-21T01:07:37.341+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-04-21T01:07:37.342+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'docker exec flowtrack_dbt dbt run --profiles-dir /usr/app']
+[2026-04-21T01:07:37.349+0000] {subprocess.py:86} INFO - Output:
+[2026-04-21T01:07:38.324+0000] {subprocess.py:93} INFO - [0m01:07:38  Running with dbt=1.8.3
+[2026-04-21T01:07:38.458+0000] {subprocess.py:93} INFO - [0m01:07:38  Registered adapter: postgres=1.8.2
+[2026-04-21T01:07:38.608+0000] {subprocess.py:93} INFO - [0m01:07:38  Found 9 models, 4 data tests, 415 macros
+[2026-04-21T01:07:38.609+0000] {subprocess.py:93} INFO - [0m01:07:38
+[2026-04-21T01:07:38.679+0000] {subprocess.py:93} INFO - [0m01:07:38  Concurrency: 4 threads (target='dev')
+[2026-04-21T01:07:38.680+0000] {subprocess.py:93} INFO - [0m01:07:38
+[2026-04-21T01:07:38.683+0000] {subprocess.py:93} INFO - [0m01:07:38  1 of 9 START sql view model analytics.stg_carriers ............................. [RUN]
+[2026-04-21T01:07:38.685+0000] {subprocess.py:93} INFO - [0m01:07:38  2 of 9 START sql view model analytics.stg_routes ............................... [RUN]
+[2026-04-21T01:07:38.685+0000] {subprocess.py:93} INFO - [0m01:07:38  3 of 9 START sql view model analytics.stg_shipments ............................ [RUN]
+[2026-04-21T01:07:38.685+0000] {subprocess.py:93} INFO - [0m01:07:38  4 of 9 START sql view model analytics.stg_warehouses ........................... [RUN]
+[2026-04-21T01:07:38.827+0000] {subprocess.py:93} INFO - [0m01:07:38  3 of 9 OK created sql view model analytics.stg_shipments ....................... [[32mCREATE VIEW[0m in 0.14s]
+[2026-04-21T01:07:38.828+0000] {subprocess.py:93} INFO - [0m01:07:38  1 of 9 OK created sql view model analytics.stg_carriers ........................ [[32mCREATE VIEW[0m in 0.14s]
+[2026-04-21T01:07:38.834+0000] {subprocess.py:93} INFO - [0m01:07:38  2 of 9 OK created sql view model analytics.stg_routes .......................... [[32mCREATE VIEW[0m in 0.15s]
+[2026-04-21T01:07:38.834+0000] {subprocess.py:93} INFO - [0m01:07:38  4 of 9 OK created sql view model analytics.stg_warehouses ...................... [[32mCREATE VIEW[0m in 0.15s]
+[2026-04-21T01:07:38.835+0000] {subprocess.py:93} INFO - [0m01:07:38  5 of 9 START sql table model analytics.mart_live_shipment_status ............... [RUN]
+[2026-04-21T01:07:38.841+0000] {subprocess.py:93} INFO - [0m01:07:38  6 of 9 START sql table model analytics.mart_shipment_overview .................. [RUN]
+[2026-04-21T01:07:38.905+0000] {subprocess.py:93} INFO - [0m01:07:38  6 of 9 OK created sql table model analytics.mart_shipment_overview ............. [[32mSELECT 3[0m in 0.05s]
+[2026-04-21T01:07:38.905+0000] {subprocess.py:93} INFO - [0m01:07:38  5 of 9 OK created sql table model analytics.mart_live_shipment_status .......... [[32mSELECT 3[0m in 0.07s]
+[2026-04-21T01:07:38.907+0000] {subprocess.py:93} INFO - [0m01:07:38  7 of 9 START sql table model analytics.mart_carrier_performance ................ [RUN]
+[2026-04-21T01:07:38.909+0000] {subprocess.py:93} INFO - [0m01:07:38  8 of 9 START sql table model analytics.mart_route_performance .................. [RUN]
+[2026-04-21T01:07:38.909+0000] {subprocess.py:93} INFO - [0m01:07:38  9 of 9 START sql table model analytics.mart_shipment_status .................... [RUN]
+[2026-04-21T01:07:39.011+0000] {subprocess.py:93} INFO - [0m01:07:39  9 of 9 OK created sql table model analytics.mart_shipment_status ............... [[32mSELECT 2[0m in 0.10s]
+[2026-04-21T01:07:39.012+0000] {subprocess.py:93} INFO - [0m01:07:39  7 of 9 OK created sql table model analytics.mart_carrier_performance ........... [[32mSELECT 3[0m in 0.10s]
+[2026-04-21T01:07:39.014+0000] {subprocess.py:93} INFO - [0m01:07:39  8 of 9 OK created sql table model analytics.mart_route_performance ............. [[32mSELECT 3[0m in 0.10s]
+[2026-04-21T01:07:39.024+0000] {subprocess.py:93} INFO - [0m01:07:39
+[2026-04-21T01:07:39.025+0000] {subprocess.py:93} INFO - [0m01:07:39  Finished running 4 view models, 5 table models in 0 hours 0 minutes and 0.41 seconds (0.41s).
+[2026-04-21T01:07:39.046+0000] {subprocess.py:93} INFO - [0m01:07:39
+[2026-04-21T01:07:39.046+0000] {subprocess.py:93} INFO - [0m01:07:39  [32mCompleted successfully[0m
+[2026-04-21T01:07:39.046+0000] {subprocess.py:93} INFO - [0m01:07:39
+[2026-04-21T01:07:39.046+0000] {subprocess.py:93} INFO - [0m01:07:39  Done. PASS=9 WARN=0 ERROR=0 SKIP=0 TOTAL=9
+[2026-04-21T01:07:40.245+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-04-21T01:07:40.245+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-04-21T01:07:40.267+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=flowtrack_batch_pipeline, task_id=run_dbt_models, run_id=manual__2026-04-21T01:07:32.340195+00:00, execution_date=20260421T010732, start_date=20260421T010737, end_date=20260421T010740
+[2026-04-21T01:07:40.291+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 0
+[2026-04-21T01:07:40.302+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-04-21T01:07:40.304+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

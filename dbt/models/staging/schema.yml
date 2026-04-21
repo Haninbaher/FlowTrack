@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: stg_shipments
+    description: "Cleaned shipment data"
+
+    columns:
+      - name: shipment_id
+        tests:
+          - not_null
+          - unique
+
+      - name: route_id
+        tests:
+          - not_null
+
+      - name: carrier_id
+        tests:
+          - not_null
+
+      - name: shipment_status
+        tests:
+          - accepted_values:
+              values: ['CREATED', 'IN_TRANSIT', 'DELIVERED', 'DELAYED', 'AT_HUB', 'OUT_FOR_DELIVERY']
+
+  - name: stg_shipment_events
+    description: "Cleaned shipment event stream"
+
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+          - unique
+
+      - name: shipment_id
+        tests:
+          - not_null
+
+      - name: event_type
+        tests:
+          - not_null
+
+      - name: status
+        tests:
+          - not_null
+
+  - name: stg_routes
+    columns:
+      - name: route_id
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_carriers
+    columns:
+      - name: carrier_id
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_warehouses
+    columns:
+      - name: warehouse_id
+        tests:
+          - not_null
+          - unique

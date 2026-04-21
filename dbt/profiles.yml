@@ -1,0 +1,12 @@
+flowtrack:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      user: flowtrack
+      password: flowtrack
+      port: 5432
+      dbname: flowtrack
+      schema: analytics
+      threads: 4

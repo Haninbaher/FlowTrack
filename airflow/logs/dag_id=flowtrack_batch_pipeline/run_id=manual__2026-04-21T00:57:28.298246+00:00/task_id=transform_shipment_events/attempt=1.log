@@ -1,0 +1,22 @@
+[2026-04-21T00:58:55.087+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-04-21T00:58:55.115+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.transform_shipment_events manual__2026-04-21T00:57:28.298246+00:00 [queued]>
+[2026-04-21T00:58:55.122+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: flowtrack_batch_pipeline.transform_shipment_events manual__2026-04-21T00:57:28.298246+00:00 [queued]>
+[2026-04-21T00:58:55.122+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 1
+[2026-04-21T00:58:55.132+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): transform_shipment_events> on 2026-04-21 00:57:28.298246+00:00
+[2026-04-21T00:58:55.139+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62 DeprecationWarning: This process (pid=270) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-04-21T00:58:55.137+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'flowtrack_batch_pipeline', 'transform_shipment_events', 'manual__2026-04-21T00:57:28.298246+00:00', '--job-id', '22', '--raw', '--subdir', 'DAGS_FOLDER/flowtrack_batch_pipeline.py', '--cfg-path', '/tmp/tmpjfci_e_f']
+[2026-04-21T00:58:55.140+0000] {standard_task_runner.py:91} INFO - Job 22: Subtask transform_shipment_events
+[2026-04-21T00:58:55.140+0000] {standard_task_runner.py:64} INFO - Started process 271 to run task
+[2026-04-21T00:58:55.176+0000] {task_command.py:426} INFO - Running <TaskInstance: flowtrack_batch_pipeline.transform_shipment_events manual__2026-04-21T00:57:28.298246+00:00 [running]> on host bca783532e21
+[2026-04-21T00:58:55.247+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='flowtrack' AIRFLOW_CTX_DAG_ID='flowtrack_batch_pipeline' AIRFLOW_CTX_TASK_ID='transform_shipment_events' AIRFLOW_CTX_EXECUTION_DATE='2026-04-21T00:57:28.298246+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-04-21T00:57:28.298246+00:00'
+[2026-04-21T00:58:55.248+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-04-21T00:58:55.260+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-04-21T00:58:55.261+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'docker exec flowtrack_spark python3 /opt/spark/work-dir/jobs/batch/transform_shipment_events.py']
+[2026-04-21T00:58:55.268+0000] {subprocess.py:86} INFO - Output:
+[2026-04-21T00:58:55.864+0000] {subprocess.py:93} INFO - staging.stg_shipment_events: 99 rows
+[2026-04-21T00:58:55.927+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-04-21T00:58:55.928+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-04-21T00:58:55.953+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=flowtrack_batch_pipeline, task_id=transform_shipment_events, run_id=manual__2026-04-21T00:57:28.298246+00:00, execution_date=20260421T005728, start_date=20260421T005855, end_date=20260421T005855
+[2026-04-21T00:58:55.994+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 0
+[2026-04-21T00:58:56.011+0000] {taskinstance.py:3503} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-04-21T00:58:56.014+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
