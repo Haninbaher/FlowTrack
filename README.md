@@ -538,5 +538,3 @@ SELECT * FROM analytics.mart_carrier_performance;
 
 ---
 
-
-Built as an end-to-end data engineering portfolio project focused on supply chain monitoring, streaming analytics, orchestration, and BI-ready data m
