@@ -6,6 +6,9 @@ The platform ingests static reference data such as warehouses, routes, carriers,
 
 ---
 
+![ETL Architecture](docs/Pipeline.png)
+
+
 ## 📌 Project Overview
 
 This project was built to simulate a realistic logistics data platform used by:
